@@ -1,6 +1,7 @@
-import { Table, Button, ButtonGroup } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import PostListSlc from "./PostListSlc";
 
-const PostList = () => {
+const PostList = ({ data, loading, error }) => {
   return (
     <Table striped bordered hover>
       <thead>
@@ -11,16 +12,7 @@ const PostList = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>#1</td>
-          <td>this is title 1</td>
-          <td>
-            <ButtonGroup aria-label="Basic example">
-              <Button variant="success">Edit</Button>
-              <Button variant="danger">Delete</Button>
-            </ButtonGroup>
-          </td>
-        </tr>
+        <PostListSlc data={data} />
       </tbody>
     </Table>
   );

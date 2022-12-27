@@ -9,6 +9,8 @@ import EditPost from "./pages/EditPost";
 import DetailPost from "./pages/DetailPost";
 import Index from "./pages/Index";
 import ErrorElement from "./pages/ErrorElement";
+import { Provider } from "react-redux";
+import store from "./state/store";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,7 +39,7 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </Provider>
 );
