@@ -1,6 +1,11 @@
 import { Button, ButtonGroup } from "react-bootstrap";
 
-const PostListSlc = ({ data }) => {
+const PostListSlc = ({ data, deleteRow }) => {
+  const deleteItem = (id) => {
+    if (window.confirm("Are you sure you want to delete !!!")) {
+      deleteRow(id);
+    }
+  };
   const rowTable = data.map((post, index) => (
     <tr key={index}>
       <td>#{++index}</td>
@@ -8,7 +13,9 @@ const PostListSlc = ({ data }) => {
       <td>
         <ButtonGroup aria-label="Basic example">
           <Button variant="success">Edit</Button>
-          <Button variant="danger">Delete</Button>
+          <Button variant="danger" onClick={() => deleteItem(post.id)}>
+            Delete
+          </Button>
         </ButtonGroup>
       </td>
     </tr>

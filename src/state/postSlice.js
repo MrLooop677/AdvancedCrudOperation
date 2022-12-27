@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+const initialState = { posts: [], loading: false, error: null };
 
 export const fetchData = createAsyncThunk(
   "posts/fetchData",
@@ -13,8 +14,22 @@ export const fetchData = createAsyncThunk(
     }
   }
 );
+export const deleteData = createAsyncThunk(
+  "posts/deleteData",
+  async (id, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+      const res = await fetch(`http://localhost:3009/data/${id}`, {
+        method: "delete",
+      });
 
-const initialState = { posts: [], loading: false, error: null };
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "posts",
   initialState,
@@ -36,6 +51,18 @@ const postSlice = createSlice({
 
     // Post Data
     // Delete Data
+    [deleteData.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [deleteData.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.posts = state.posts.filter((post) => post.id !== action.payload);
+    },
+    [deleteData.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     // Edit Data
   },
 });
