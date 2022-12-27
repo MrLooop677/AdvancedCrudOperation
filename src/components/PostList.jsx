@@ -1,7 +1,8 @@
 import { Table } from "react-bootstrap";
 import PostListSlc from "./PostListSlc";
+import { memo } from "react";
 
-const PostList = ({ data, loading, error }) => {
+const PostList = ({ data, deleteRow }) => {
   return (
     <Table striped bordered hover>
       <thead>
@@ -12,10 +13,10 @@ const PostList = ({ data, loading, error }) => {
         </tr>
       </thead>
       <tbody>
-        <PostListSlc data={data} />
+        <PostListSlc data={data} deleteRow={deleteRow} />
       </tbody>
     </Table>
   );
 };
 
-export default PostList;
+export default memo(PostList);
