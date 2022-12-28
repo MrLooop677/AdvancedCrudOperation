@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import postSlice from "./postSlice";
-const store = configureStore({ reducer: { postSlice } });
+import authSlice from "./authSlice";
+const store = configureStore({ reducer: { postSlice, authSlice } });
 export default store;
