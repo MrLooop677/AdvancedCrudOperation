@@ -14,7 +14,7 @@ const AddPost = () => {
   const { loading, error } = useSelector((state) => state.postSlice);
   const HundlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(postData({ title, desc }))
+    dispatch(postData({ title, body: desc }))
       .unwrap()
       .then(() => {
         navigate("/");

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const initialState = { posts: [], loading: false, error: null };
+const initialState = { posts: [], loading: false, error: null, item: {} };
 
 // fetch Data
 export const fetchData = createAsyncThunk(
@@ -52,6 +52,20 @@ export const postData = createAsyncThunk(
     }
   }
 );
+// Edit Data
+export const DetailData = createAsyncThunk(
+  "posts/DetailData",
+  async (itemId, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+      const res = await fetch(`http://localhost:3009/data/${itemId}`);
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 const postSlice = createSlice({
   name: "posts",
   initialState,
@@ -97,7 +111,21 @@ const postSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    // Edit Data
+    // DetailData Data
+    [DetailData.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+      // state.item = null;
+    },
+    [DetailData.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.item = action.payload;
+      console.log(state.item);
+    },
+    [DetailData.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 export default postSlice.reducer;
