@@ -1,7 +1,7 @@
 import React from "react";
 
 const Loading = ({ loading, error, children }) => {
-  const btnType = children.props.name;
+  const btnType = children?.props?.name;
   console.log(btnType);
   const renderHundler = () => {
     if (btnType == "Button") {
