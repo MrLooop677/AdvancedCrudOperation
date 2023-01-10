@@ -52,7 +52,7 @@ export const postData = createAsyncThunk(
     }
   }
 );
-// Edit Data
+// Detail Data
 export const DetailData = createAsyncThunk(
   "posts/DetailData",
   async (itemId, thunkApi) => {
@@ -61,6 +61,27 @@ export const DetailData = createAsyncThunk(
       const res = await fetch(`http://localhost:3009/data/${itemId}`);
       const data = await res.json();
       return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+// Edit Data
+export const EditlData = createAsyncThunk(
+  "posts/postData",
+  async (item, thunkApi) => {
+    const { rejectWithValue, getState } = thunkApi;
+    const { authSlice } = getState();
+    item.userId = authSlice.id;
+    try {
+      const res = await fetch(`http://localhost:3009/data/${item.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+      return item;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -123,6 +144,21 @@ const postSlice = createSlice({
       console.log(state.item);
     },
     [DetailData.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // EditlData Data
+    [EditlData.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [EditlData.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.item = action.payload;
+      console.log("EditlData", state.item);
+    },
+    [EditlData.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

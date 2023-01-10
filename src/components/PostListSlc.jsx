@@ -20,7 +20,9 @@ const PostListSlc = ({ data, deleteRow }) => {
 
       <td>
         <ButtonGroup aria-label="Basic example">
-          <Button variant="success">Edit</Button>
+          <Link className="btn btn-success" to={`post/${post.id}/edit`}>
+            Edit
+          </Link>
           <Button variant="danger" onClick={() => deleteItem(post.id)}>
             Delete
           </Button>
