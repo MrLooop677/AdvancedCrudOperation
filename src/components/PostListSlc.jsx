@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { EdithData } from "../state/postSlice";
 import { Link } from "react-router-dom";
 
-const PostListSlc = ({ data, deleteRow }) => {
+const PostListSlc = ({ data, deleteRow, isLogin }) => {
   const dispatch = useDispatch();
   const deleteItem = (id) => {
     if (window.confirm("Are you sure you want to delete !!!")) {
@@ -23,7 +23,11 @@ const PostListSlc = ({ data, deleteRow }) => {
           <Link className="btn btn-success" to={`post/${post.id}/edit`}>
             Edit
           </Link>
-          <Button variant="danger" onClick={() => deleteItem(post.id)}>
+          <Button
+            variant="danger"
+            onClick={() => deleteItem(post.id)}
+            disabled={!isLogin}
+          >
             Delete
           </Button>
         </ButtonGroup>

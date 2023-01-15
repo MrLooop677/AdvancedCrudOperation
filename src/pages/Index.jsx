@@ -8,12 +8,14 @@ const Index = () => {
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state) => state.postSlice);
   const deleteRow = useCallback((id) => dispatch(deleteData(id)), [dispatch]);
+  const { isLogin } = useSelector((state) => state.authSlice);
+
   useEffect(() => {
     dispatch(fetchData());
-  }, []);
+  }, [dispatch]);
   return (
     <Loading loading={loading} error={error}>
-      <PostList data={posts} deleteRow={deleteRow} />
+      <PostList data={posts} deleteRow={deleteRow} isLogin={isLogin} />
     </Loading>
   );
 };
