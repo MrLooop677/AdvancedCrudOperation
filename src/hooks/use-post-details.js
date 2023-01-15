@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { DetailData } from "../state/postSlice";
 const usePostDetails = () => {
   const { id } = useParams();
+  console.log("id", id);
   const dispatch = useDispatch();
   const { item, loading, error } = useSelector((state) => state.postSlice);
   useEffect(() => {

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { postData } from "../state/postSlice";
 import { useNavigate } from "react-router-dom";
+import withGuard from "../util/withGuard";
 const AddPost = () => {
   const [title, settitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -59,4 +60,4 @@ const AddPost = () => {
   );
 };
 
-export default AddPost;
+export default withGuard(AddPost);

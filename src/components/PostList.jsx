@@ -2,7 +2,7 @@ import { Table } from "react-bootstrap";
 import PostListSlc from "./PostListSlc";
 import { memo } from "react";
 
-const PostList = ({ data, deleteRow }) => {
+const PostList = ({ data, deleteRow, isLogin }) => {
   return (
     <Table striped bordered hover>
       <thead>
@@ -13,7 +13,7 @@ const PostList = ({ data, deleteRow }) => {
         </tr>
       </thead>
       <tbody>
-        <PostListSlc data={data} deleteRow={deleteRow} />
+        <PostListSlc data={data} deleteRow={deleteRow} isLogin={isLogin} />
       </tbody>
     </Table>
   );

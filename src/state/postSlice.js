@@ -68,11 +68,9 @@ export const DetailData = createAsyncThunk(
 );
 // Edit Data
 export const EditlData = createAsyncThunk(
-  "posts/postData",
+  "posts/EditlData",
   async (item, thunkApi) => {
-    const { rejectWithValue, getState } = thunkApi;
-    const { authSlice } = getState();
-    item.userId = authSlice.id;
+    const { rejectWithValue } = thunkApi;
     try {
       const res = await fetch(`http://localhost:3009/data/${item.id}`, {
         method: "PATCH",
@@ -99,7 +97,7 @@ const postSlice = createSlice({
     },
     [fetchData.fulfilled]: (state, action) => {
       state.loading = false;
-      state.posts.push(...action.payload);
+      state.posts = [...action.payload];
     },
     [fetchData.rejected]: (state, action) => {
       state.loading = false;
