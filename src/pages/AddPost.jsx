@@ -7,37 +7,59 @@ import { useDispatch } from "react-redux";
 import { postData } from "../state/postSlice";
 import { useNavigate } from "react-router-dom";
 import withGuard from "../util/withGuard";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 const AddPost = () => {
   const [title, settitle] = useState("");
   const [desc, setDesc] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.postSlice);
-  const HundlerSubmit = (e) => {
-    e.preventDefault();
-    dispatch(postData({ title, body: desc }))
-      .unwrap()
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    setDesc("");
-    settitle("");
-  };
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      desc: "",
+    },
+    validationSchema: Yup.object({
+      title: Yup.string()
+        .min(4, "Must be 4 characters or more")
+        .required("Required"),
+      desc: Yup.string()
+        .min(3, "Must be 3 characters or more")
+        .required("Required"),
+    }),
+    onSubmit: (values) => {
+      const id = Math.floor(Math.random() * 500);
+      dispatch(postData({ id, title: values.title, body: values, desc }))
+        .unwrap()
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          alert(error);
+        });
+      setDesc("");
+      settitle("");
+    },
+  });
   return (
-    <Form onSubmit={(e) => HundlerSubmit(e)}>
+    <Form onSubmit={formik.handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Enter Title</Form.Label>
         <Form.Control
           type="text"
           placeholder="Enter Title"
           name="title"
-          value={title}
           required
-          onChange={(e) => settitle(e.target.value)}
+          onChange={formik.handleChange}
+          value={formik.values.title}
+          isInvalid={!!formik.errors.title}
         />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.title}.
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -45,11 +67,15 @@ const AddPost = () => {
         <Form.Control
           as="textarea"
           placeholder="Leave a description here"
-          name="description"
-          value={desc}
+          name="desc"
           required
-          onChange={(e) => setDesc(e.target.value)}
+          onChange={formik.handleChange}
+          value={formik.values.desc}
+          isInvalid={!!formik.errors.desc}
         />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.desc}.
+        </Form.Control.Feedback>
       </Form.Group>
       <Loading loading={loading} error={error}>
         <Button name="Button" variant="primary" type="submit">
