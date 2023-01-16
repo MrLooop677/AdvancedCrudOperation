@@ -1,4 +1,3 @@
-import React, { useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Loading from "../components/Loading";
@@ -11,8 +10,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const AddPost = () => {
-  const [title, settitle] = useState("");
-  const [desc, setDesc] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.postSlice);
@@ -32,7 +29,7 @@ const AddPost = () => {
     }),
     onSubmit: (values) => {
       const id = Math.floor(Math.random() * 500);
-      dispatch(postData({ id, title: values.title, body: values, desc }))
+      dispatch(postData({ id, title: values.title, body: values.desc }))
         .unwrap()
         .then(() => {
           navigate("/");
@@ -40,8 +37,6 @@ const AddPost = () => {
         .catch((error) => {
           alert(error);
         });
-      setDesc("");
-      settitle("");
     },
   });
   return (
